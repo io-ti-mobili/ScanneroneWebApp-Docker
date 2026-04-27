@@ -58,7 +58,7 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "proxyConfig": "proxy.conf.json",
-            "allowedHosts": ["all"]
+            "allowedHosts": ["all", "moltoserio.duckdns.org"]
           },
           "configurations": {
             "production": {

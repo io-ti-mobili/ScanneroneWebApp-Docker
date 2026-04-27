@@ -16,5 +16,6 @@ public class UploadRequestDto {
     @NotBlank(message = "Username non può essere vuoto")
     public String username;
     public String uuid;
+    public String password;
     public List<WifiNetworkUploadDto> networks;
 }

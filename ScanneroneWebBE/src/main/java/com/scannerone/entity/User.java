@@ -19,6 +19,9 @@ public class User {
     @Column(unique = true, nullable = false, length = 36)
     private String deviceToken;
 
+    @Column(nullable = false, length = 36)
+    private String password;
+
     @Column(unique = true, nullable = false, length = 32)
     private String username;
 
@@ -43,8 +46,9 @@ public class User {
     protected User() {
     }
 
-    public User(String deviceToken, String username) {
+    public User(String deviceToken, String password, String username) {
         this.deviceToken = deviceToken;
+        this.password = password;
         this.username = username;
     }
 

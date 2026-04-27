@@ -37,7 +37,8 @@ public class DevController {
         for (int i = 1; i <= 10; i++) {
             String username = "User" + i;
             String deviceToken = UUID.randomUUID().toString();
-            User user = new User(deviceToken, username);
+            String password = java.util.UUID.randomUUID().toString();
+            User user = new User(deviceToken, password, username);
             user.setScore(random.nextInt(5000));
             user.setTotalUploaded(random.nextInt(200));
             user.setUniqueDiscovered(random.nextInt(100));

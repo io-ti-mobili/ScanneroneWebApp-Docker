@@ -6,6 +6,8 @@ import com.scannerone.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class UserService {
 
@@ -34,8 +36,23 @@ public class UserService {
             return user;
         }).orElseGet(() -> {
             String username = resolveUsername(requestedUsername, deviceToken);
-            return userRepository.save(new User(deviceToken, username));
+            String password = UUID.randomUUID().toString();
+            return userRepository.save(new User(deviceToken, password, username));
         });
+    }
+
+    @Transactional
+    public User registerUser() {
+        String uuid = UUID.randomUUID().toString();
+        String password = UUID.randomUUID().toString();
+        String username = resolveUsername(null, uuid);
+        return userRepository.save(new User(uuid, password, username));
+    }
+
+    @Transactional(readOnly = true)
+    public User authenticate(String deviceToken, String password) {
+        return userRepository.findByDeviceTokenAndPassword(deviceToken, password)
+                .orElseThrow(() -> new SecurityException("Credenziali non valide"));
     }
 
     @Transactional

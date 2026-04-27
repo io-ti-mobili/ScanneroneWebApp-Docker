@@ -62,8 +62,23 @@ public class NetworkUploadService {
         int newCount = 0, updatedCount = 0, duplicateCount = 0, totalPoints = 0;
         List<String> newCitiesThisBatch = new ArrayList<>();
         
-        String token = request.uuid != null && !request.uuid.isBlank() ? request.uuid : "unknown_device";
-        User user = userService.getOrCreate(token, request.username);
+        if (request.uuid == null || request.uuid.isBlank() || request.password == null || request.password.isBlank()) {
+            throw new IllegalArgumentException("UUID e password sono obbligatori");
+        }
+        
+        User user;
+        try {
+            user = userService.authenticate(request.uuid, request.password);
+        } catch (SecurityException e) {
+            throw new IllegalArgumentException("Credenziali non valide");
+        }
+
+        if (request.username != null && !request.username.isBlank()) {
+            String sanitized = request.username.trim();
+            if (!sanitized.equals(user.getUsername()) && !userRepository.existsByUsername(sanitized)) {
+                user.setUsername(sanitized);
+            }
+        }
         
         List<String> validBssids = new ArrayList<>();
         for (WifiNetworkUploadDto dto : request.networks) {

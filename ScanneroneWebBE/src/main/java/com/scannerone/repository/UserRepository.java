@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByDeviceToken(String deviceToken);
 
+    Optional<User> findByDeviceTokenAndPassword(String deviceToken, String password);
+
     Optional<User> findByUsername(String username);
 
     boolean existsByUsername(String username);

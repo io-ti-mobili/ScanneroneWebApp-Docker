@@ -1,0 +1,5 @@
+Per avviare:
+docker compose up -d --build (--build solo la prima volta o quando si devono ricreare le immagini)
+
+Per rimuovere i container e la rete: docker compose down
+Per rimuovere tutto quanto: docker compose down -v

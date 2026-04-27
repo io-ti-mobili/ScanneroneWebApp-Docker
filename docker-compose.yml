@@ -1,0 +1,50 @@
+services:
+  scannerone-db:
+    image: postgres:17
+    container_name: scannerone-db
+    environment:
+      POSTGRES_USER: user        
+      POSTGRES_PASSWORD: pass    
+      POSTGRES_DB: scanneronedb  
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - scannerone-network
+
+
+  scannerone-backend:
+    build: 
+      context: ./ScanneroneWebBE 
+    container_name: scannerone-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://scannerone-db:5432/scanneronedb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - scannerone-db
+    networks:
+      - scannerone-network
+
+  
+  scannerone-frontend:
+    build:
+      context: ./ScanneroneWebFE
+    container_name: scannerone-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - scannerone-backend
+    networks:
+      - scannerone-network
+
+networks:
+  scannerone-network:
+    driver: bridge
+
+volumes:
+  db_data:

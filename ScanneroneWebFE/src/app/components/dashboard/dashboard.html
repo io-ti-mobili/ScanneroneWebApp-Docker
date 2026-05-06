@@ -1,1 +1,67 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="dash-header">
+    <h2 class="dash-title">{{ 'DASHBOARD.TITLE' | translate }}</h2>
+  </div>
+
+  <div class="stats-grid">
+    <app-stat-card *ngFor="let stat of stats" [stat]="stat"></app-stat-card>
+  </div>
+
+  <div class="charts-grid mt-4">
+    <!-- Sicurezza -->
+    <app-chart-card [title]="'DASHBOARD.CHART.SECURITY' | translate" 
+                    chartType="pie" 
+                    [data]="securityData" 
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'security')"></app-chart-card>
+
+    <!-- Scoperte -->
+    <app-chart-card [title]="'DASHBOARD.CHART.DISCOVERIES' | translate" 
+                    chartType="bar" 
+                    [data]="discoveriesData" 
+                    color="#93c5fd" 
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'discoveries')"></app-chart-card>
+    
+    <!-- Dinamica Geografica (Hierarchical) -->
+    <app-chart-card [title]="geoChartTitle" 
+                    chartType="list" 
+                    [data]="geoHierarchicalData" 
+                    [color]="'#818cf8'"
+                    [showGeoFilters]="true"
+                    (filterChange)="onHierarchicalGeoChange($event)"></app-chart-card>
+    
+    <!-- Top WPA3 -->
+    <app-chart-card [title]="wpa3CardTitle" 
+                    chartType="list" 
+                    [data]="topCitiesWpa3Data" 
+                    color="#3b82f6"
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'wpa3')"></app-chart-card>
+    
+    <!-- Low Security -->
+    <app-chart-card [title]="insecureCardTitle" 
+                    chartType="list" 
+                    [data]="topInsecureCitiesData" 
+                    [isPercent]="true" 
+                    color="#ef4444"
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'insecure')"></app-chart-card>
+
+    <!-- Categorie -->
+    <app-chart-card [title]="categoryCardTitle" 
+                    chartType="list" 
+                    [data]="categoryData" 
+                    [isPercent]="true" 
+                    color="#f59e0b"
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'category')"></app-chart-card>
+
+    <!-- Banda -->
+    <app-chart-card [title]="'DASHBOARD.CHART.BAND' | translate" 
+                    chartType="list" 
+                    [data]="bandData"
+                    [showGeoFilters]="true"
+                    (filterChange)="onCardFilterChange($event, 'band')"></app-chart-card>
+  </div>
+</div>

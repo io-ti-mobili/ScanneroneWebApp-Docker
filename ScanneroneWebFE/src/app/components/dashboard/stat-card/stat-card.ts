@@ -2,16 +2,12 @@ import { Component, Input } from '@angular/core';
 import { SimpleStatDto } from '../../../dto/simple-stat.dto';
 import { CommonModule } from '@angular/common';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-stat-card',
-  imports: [CommonModule],
-  template: `
-    <div class="stat-card">
-      <div class="stat-title">{{ stat.title }}</div>
-      <div class="stat-value">{{ stat.rawNumber }}</div>
-      <div class="stat-desc">{{ stat.description }}</div>
-    </div>
-  `,
+  imports: [CommonModule, TranslateModule],
+  templateUrl: './stat-card.html',
   styles: [`
     .stat-card {
       background-color: #282828;

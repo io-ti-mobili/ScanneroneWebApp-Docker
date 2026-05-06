@@ -4,93 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClassificaService } from '../../services/classifica.service';
 import { UserProfileDto } from '../../dto/user-profile.dto';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
-  template: `
-    <div class="profile-container" *ngIf="profile">
-      <!-- Bottone Indietro -->
-      <button class="back-btn" (click)="goBack()">
-        <i class="pi pi-arrow-left"></i> Torna alla Classifica
-      </button>
-
-      <!-- Intestazione Profilo -->
-      <div class="profile-header">
-        <div class="user-main">
-          <div class="avatar-large">{{ profile.avatar }}</div>
-          <div class="user-details">
-            <h1 class="username">{{ profile.username }}</h1>
-            <p class="subtitle">Attivo da {{ profile.joinDate }} &middot; {{ profile.location }}</p>
-          </div>
-        </div>
-
-        <div class="score-main">
-          <h1 class="score-large">{{ profile.score }}</h1>
-          <p class="score-subtitle">punti totali &middot; #{{ profile.globalRank }} globale</p>
-        </div>
-      </div>
-
-      <!-- Griglia delle Card -->
-      <div class="cards-grid">
-        
-        <!-- Card: Le tue reti -->
-        <div class="profile-card">
-          <h2 class="card-title">Le tue reti</h2>
-          
-          <div class="stat-row">
-            <span class="stat-label">Caricate totali</span>
-            <span class="stat-value font-bold">{{ profile.reti.totali | number:'1.0-0' }}</span>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-label">Uniche (nuove per il DB)</span>
-            <span class="stat-value blue-text">{{ profile.reti.uniche | number:'1.0-0' }}</span>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-label">Accuracy media</span>
-            <span class="stat-value font-bold">{{ profile.reti.accuracy }}</span>
-          </div>
-          
-          <div class="stat-row no-border">
-            <span class="stat-label">Con indirizzo completo</span>
-            <span class="stat-value font-bold">{{ profile.reti.indirizzoCompleto }}</span>
-          </div>
-        </div>
-
-        <!-- Card: Copertura geografica -->
-        <div class="profile-card">
-          <h2 class="card-title">Copertura geografica</h2>
-          
-          <div class="stat-row">
-            <span class="stat-label">Paesi</span>
-            <span class="stat-value font-bold">{{ profile.geografia.paesi }}</span>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-label">Regioni</span>
-            <span class="stat-value font-bold">{{ profile.geografia.regioni }}</span>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-label">Città</span>
-            <span class="stat-value font-bold">{{ profile.geografia.citta }}</span>
-          </div>
-          
-          <div class="stat-row no-border">
-            <span class="stat-label">Nuove città scoperte</span>
-            <span class="stat-value blue-text">{{ profile.geografia.nuoveCitta }}</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Spinner se sta caricando -->
-    <div class="loading-state" *ngIf="!profile">
-      <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #3b82f6;"></i>
-    </div>
-  `,
+  imports: [CommonModule, TranslateModule],
+  templateUrl: './profile.html',
   styles: [`
     .profile-container {
       max-width: 900px;

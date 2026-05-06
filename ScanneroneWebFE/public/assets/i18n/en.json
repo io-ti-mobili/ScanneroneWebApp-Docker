@@ -1,0 +1,75 @@
+{
+  "NAVBAR": {
+    "DASHBOARD": "Dashboard",
+    "LEADERBOARD": "Leaderboard"
+  },
+  "DASHBOARD": {
+    "TITLE": "Network Dashboard",
+    "STATS": {
+      "NETWORKS_TITLE": "Networks in Database",
+      "NETWORKS_DESC": "Total uploaded networks",
+      "USERS_TITLE": "Active Users",
+      "USERS_DESC": "Scannerone Community",
+      "CITIES_TITLE": "Mapped Cities",
+      "IN": "In",
+      "COUNTRIES": "countries",
+      "OPEN_TITLE": "Open Networks",
+      "OPEN_DESC": "Without protection"
+    },
+    "CHART": {
+      "SECURITY": "Network Security",
+      "DISCOVERIES": "Daily Discoveries",
+      "TOP_COUNTRIES": "Top Countries by Networks",
+      "TOP_REGIONS_IN": "Top Regions in",
+      "TOP_CITIES_IN": "Top Cities in",
+      "WPA3_COUNTRIES": "Top WPA3 Countries",
+      "WPA3_REGIONS": "Top WPA3 Regions in",
+      "WPA3_CITIES": "Top WPA3 Cities in",
+      "INSECURE_COUNTRIES": "Top Insecure Countries",
+      "INSECURE_REGIONS": "Top Insecure Regions in",
+      "INSECURE_CITIES": "Top Insecure Cities in",
+      "CAT_GLOBAL": "Location Type (Global)",
+      "CAT_IN": "Location Type in",
+      "BAND": "Band — 2.4 / 5 / 6 GHz"
+    }
+  },
+  "LEADERBOARD": {
+    "GLOBAL": "Global Score",
+    "DISCOVERY": "Discoverers",
+    "TRAVELERS": "Explorers",
+    "CITIES": "cities",
+    "NETWORKS": "unique networks",
+    "AVG_ACCURACY": "avg accuracy"
+  },
+  "PROFILE": {
+    "BACK": "Back to Leaderboard",
+    "ACTIVE_SINCE": "Active since",
+    "TOTAL_POINTS": "total points",
+    "GLOBAL": "global",
+    "YOUR_NETWORKS": "Your networks",
+    "TOTAL_UPLOADED": "Total uploaded",
+    "UNIQUE": "Unique (new to DB)",
+    "AVG_ACCURACY": "Avg accuracy",
+    "FULL_ADDRESS": "With full address",
+    "GEO_COVERAGE": "Geographical coverage",
+    "COUNTRIES": "Countries",
+    "REGIONS": "Regions",
+    "CITIES": "Cities",
+    "NEW_CITIES": "New cities discovered"
+  },
+  "SEC": {
+    "WPA2": "WPA2",
+    "WPA3": "WPA3",
+    "WPA2/WPA3": "WPA2/WPA3",
+    "WPA/WPA2": "WPA/WPA2",
+    "WEP": "WEP",
+    "OPEN": "Open"
+  },
+  "CAT": {
+    "ISP": "ISP",
+    "FAST_FOOD": "Fast Food",
+    "UNIVERSITY": "University",
+    "HOTSPOT": "Hotspot",
+    "OTHER": "Other"
+  }
+}

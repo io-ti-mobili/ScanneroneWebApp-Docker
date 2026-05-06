@@ -10,64 +10,12 @@ import { DashboardService } from '../../services/dashboard.service';
 import { LeaderboardEntryDto } from '../../dto/leaderboard-entry.dto';
 import { CountryDto } from '../../dto/country.dto';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-classifica',
-  imports: [CommonModule, FormsModule, SelectModule, PaginatorModule, InputTextModule],
-  template: `
-    <div class="classifica-container">
-      <div class="filters-header">
-        <div class="filters">
-          <button class="filter-btn" [class.active]="activeCategory === 'global'" (click)="setCategory('global')">Global Score</button>
-          <button class="filter-btn" [class.active]="activeCategory === 'discovery'" (click)="setCategory('discovery')">Scopritori</button>
-          <button class="filter-btn" [class.active]="activeCategory === 'travelers'" (click)="setCategory('travelers')">Esploratori</button>
-        </div>
-
-        <div class="geo-filters">
-           <p-select [options]="countryOptions" 
-                    [(ngModel)]="selectedCountry" 
-                    (onChange)="onCountryChangeLocal()" 
-                    styleClass="p-dropdown-sm custom-geo"></p-select>
-
-           <p-select *ngIf="selectedCountry !== 'Global' && regionOptions.length > 0"
-                    [options]="regionOptions" 
-                    [(ngModel)]="selectedRegion" 
-                    (onChange)="onRegionChangeLocal()" 
-                    styleClass="p-dropdown-sm custom-geo"></p-select>
-        </div>
-      </div>
-
-      <div class="leaderboard-card">
-        <div class="leaderboard-row" *ngFor="let entry of paginatedLeaderboard; let isLast=last; let i=index" [class.border-bottom]="!isLast">
-          <div class="rank" [ngClass]="getRankColor(entry.rank)">{{ entry.rank }}</div>
-          
-          <div class="user-info">
-            <div class="username-container">
-              <div class="username">{{ entry.username }}</div>
-              <div class="user-uuid">{{ entry.deviceToken }}</div>
-            </div>
-            <div class="location-stats">
-              {{ entry.citiesCovered }} città &middot; {{ entry.uniqueDiscovered | number:'1.0-0' }} reti uniche
-            </div>
-          </div>
-          
-          <div class="score-info">
-            <div class="score">{{ entry.score | number }} pt</div>
-            <div class="accuracy" *ngIf="entry.avgAccuracy">accuracy media {{ entry.avgAccuracy | number:'1.1-1' }}m</div>
-          </div>
-        </div>
-
-        <p-paginator 
-          [first]="first" 
-          [rows]="rows" 
-          [totalRecords]="totalRecords" 
-          (onPageChange)="onPageChange($event)"
-          [showCurrentPageReport]="true"
-          currentPageReportTemplate="{first} - {last} di {totalRecords}"
-          styleClass="custom-paginator">
-        </p-paginator>
-      </div>
-    </div>
-  `,
+  imports: [CommonModule, FormsModule, SelectModule, PaginatorModule, InputTextModule, TranslateModule],
+  templateUrl: './classifica.html',
   styles: [`
     .classifica-container {
       max-width: 900px;

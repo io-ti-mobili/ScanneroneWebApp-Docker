@@ -6,56 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { ChartDataDto } from '../../../dto/chart-data.dto';
 import { DashboardService } from '../../../services/dashboard.service';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-chart-card',
-  imports: [CommonModule, ChartModule, SelectModule, FormsModule],
-  template: `
-    <div class="chart-card">
-      <div class="card-header">
-        <h3 class="card-title">{{ title }}</h3>
-        
-        <!-- Cascading Geo Filters -->
-        <div class="header-filters" *ngIf="showGeoFilters">
-          <p-select [options]="countryOptions" 
-                   [(ngModel)]="selectedCountry" 
-                   (onChange)="onCountryChangeLocal()" 
-                   styleClass="p-dropdown-xs custom-geo-card"></p-select>
-
-           <p-select *ngIf="selectedCountry !== 'Global' && regionOptions.length > 0"
-                   [options]="regionOptions" 
-                   [(ngModel)]="selectedRegion" 
-                   (onChange)="onRegionChangeLocal()" 
-                   styleClass="p-dropdown-xs custom-geo-card"></p-select>
-        </div>
-
-        <p-select *ngIf="showDropdown && !showGeoFilters" [options]="countries" [(ngModel)]="selectedCountrySimple" (onChange)="onCountryChange()" placeholder="Seleziona" styleClass="p-dropdown-sm" class="custom-dropdown"></p-select>
-      </div>
-
-      <!-- Render as Custom List of Bars -->
-      <div class="list-container" *ngIf="chartType === 'list'">
-        <div class="list-item" *ngFor="let item of data; let i=index">
-          <div class="item-label">{{ item.label }}</div>
-          <div class="item-bar-container">
-            <div class="item-bar" [style.width.%]="getPercent(item.value)" [style.background-color]="getPaletteColor(i)"></div>
-          </div>
-          <div class="item-value">{{ formatValue(item.value) }}</div>
-        </div>
-      </div>
-
-      <!-- Render as Standard Chart -->
-      <div class="chart-container" *ngIf="chartType !== 'list'">
-        <p-chart [type]="chartType" [data]="chartDataObj" [options]="chartOptions" [height]="'200px'"></p-chart>
-      </div>
-
-      <!-- Optional Footer Stats -->
-      <div class="footer-stats" *ngIf="childStats && childStats.length > 0">
-        <div class="footer-item" *ngFor="let stat of childStats">
-          <span class="footer-label">{{ stat.title }}</span>
-          <span class="footer-value">{{ stat.rawNumber }}</span>
-        </div>
-      </div>
-    </div>
-  `,
+  imports: [CommonModule, ChartModule, SelectModule, FormsModule, TranslateModule],
+  templateUrl: './chart-card.html',
   styles: [`
     .chart-card {
       background-color: #282828;

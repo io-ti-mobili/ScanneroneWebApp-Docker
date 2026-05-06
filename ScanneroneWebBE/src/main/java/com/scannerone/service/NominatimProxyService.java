@@ -98,7 +98,7 @@ public class NominatimProxyService {
     }
 
     private void geocodeAndUpdate(WifiNetwork network) {
-        String cacheKey = String.format("%.3f,%.3f", network.getLatitude(), network.getLongitude());
+        String cacheKey = String.format(java.util.Locale.US, "%.3f,%.3f", network.getLatitude(), network.getLongitude());
         GeoResult result = geoCache.get(cacheKey);
 
         if (result == null) {
@@ -121,7 +121,7 @@ public class NominatimProxyService {
 
     private GeoResult fetchFromNominatim(double lat, double lon) {
         try {
-            String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&zoom=18&addressdetails=1", lat, lon);
+            String url = String.format(java.util.Locale.US, "https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&zoom=18&addressdetails=1", lat, lon);
             
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "ScanneroneBackend/1.0"); // Nominatim requires a user agent

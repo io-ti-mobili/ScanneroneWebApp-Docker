@@ -8,78 +8,12 @@ import { DashboardService } from '../../services/dashboard.service';
 import { SimpleStatDto } from '../../dto/simple-stat.dto';
 import { ChartDataDto } from '../../dto/chart-data.dto';
 
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, StatCard, ChartCard, FormsModule, SelectModule],
-  template: `
-    <div class="dashboard-container">
-      <div class="dash-header">
-        <h2 class="dash-title">Network Dashboard</h2>
-      </div>
-
-      <div class="stats-grid">
-        <app-stat-card *ngFor="let stat of stats" [stat]="stat"></app-stat-card>
-      </div>
-
-      <div class="charts-grid mt-4">
-        <!-- Sicurezza -->
-        <app-chart-card title="Sicurezza reti" 
-                        chartType="pie" 
-                        [data]="securityData" 
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'security')"></app-chart-card>
-
-        <!-- Scoperte -->
-        <app-chart-card title="Scoperte giornaliere" 
-                        chartType="bar" 
-                        [data]="discoveriesData" 
-                        color="#93c5fd" 
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'discoveries')"></app-chart-card>
-        
-        <!-- Dinamica Geografica (Hierarchical) -->
-        <app-chart-card [title]="geoChartTitle" 
-                        chartType="list" 
-                        [data]="geoHierarchicalData" 
-                        [color]="'#818cf8'"
-                        [showGeoFilters]="true"
-                        (filterChange)="onHierarchicalGeoChange($event)"></app-chart-card>
-        
-        <!-- Top WPA3 -->
-        <app-chart-card [title]="wpa3CardTitle" 
-                        chartType="list" 
-                        [data]="topCitiesWpa3Data" 
-                        color="#3b82f6"
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'wpa3')"></app-chart-card>
-        
-        <!-- Low Security -->
-        <app-chart-card [title]="insecureCardTitle" 
-                        chartType="list" 
-                        [data]="topInsecureCitiesData" 
-                        [isPercent]="true" 
-                        color="#ef4444"
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'insecure')"></app-chart-card>
-
-        <!-- Categorie -->
-        <app-chart-card [title]="categoryCardTitle" 
-                        chartType="list" 
-                        [data]="categoryData" 
-                        [isPercent]="true" 
-                        color="#f59e0b"
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'category')"></app-chart-card>
-
-        <!-- Banda -->
-        <app-chart-card title="Banda — 2.4 / 5 / 6 GHz" 
-                        chartType="list" 
-                        [data]="bandData"
-                        [showGeoFilters]="true"
-                        (filterChange)="onCardFilterChange($event, 'band')"></app-chart-card>
-      </div>
-    </div>
-  `,
+  imports: [CommonModule, StatCard, ChartCard, FormsModule, SelectModule, TranslateModule],
+  templateUrl: './dashboard.html',
   styles: [`
     .dashboard-container {
       max-width: 1400px;
@@ -129,8 +63,33 @@ export class Dashboard implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      this.refreshTranslations();
+    });
+    // Ensure initial load
+    this.translate.get('DASHBOARD.TITLE').subscribe(() => {
+      this.refreshTranslations();
+    });
+  }
+
+  refreshTranslations() {
+    this.onHierarchicalGeoChange({
+        country: this.lastGeoFilter.country, 
+        region: this.lastGeoFilter.region 
+    });
+    this.onCardFilterChange(this.lastWpa3Filter, 'wpa3');
+    this.onCardFilterChange(this.lastInsecureFilter, 'insecure');
+    this.onCardFilterChange(this.lastCategoryFilter, 'category');
+    this.refreshStats();
+  }
+
+  lastGeoFilter: any = {};
+  lastWpa3Filter: any = {};
+  lastInsecureFilter: any = {};
+  lastCategoryFilter: any = {};
 
   ngOnInit() {
     this.refreshAll();
@@ -151,27 +110,28 @@ export class Dashboard implements OnInit {
     this.dashboardService.getGlobalStats().subscribe((data: any) => {
       if (!data) return;
       this.stats = [
-        { title: 'Reti nel database', rawNumber: data.totalNetworks?.toLocaleString() || '0', description: 'Totale reti caricate' },
-        { title: 'Utenti attivi', rawNumber: data.totalUsers?.toLocaleString() || '0', description: 'Community Scannerone' },
-        { title: 'Città mappate', rawNumber: data.totalCities?.toLocaleString() || '0', description: `In ${data.totalCountries || 0} nazioni` },
-        { title: 'Reti Open', rawNumber: (data.openNetworkPercent ? data.openNetworkPercent.toFixed(1) : '0') + '%', description: 'Senza protezione' }
+        { title: this.translate.instant('DASHBOARD.STATS.NETWORKS_TITLE'), rawNumber: data.totalNetworks?.toLocaleString() || '0', description: this.translate.instant('DASHBOARD.STATS.NETWORKS_DESC') },
+        { title: this.translate.instant('DASHBOARD.STATS.USERS_TITLE'), rawNumber: data.totalUsers?.toLocaleString() || '0', description: this.translate.instant('DASHBOARD.STATS.USERS_DESC') },
+        { title: this.translate.instant('DASHBOARD.STATS.CITIES_TITLE'), rawNumber: data.totalCities?.toLocaleString() || '0', description: `${this.translate.instant('DASHBOARD.STATS.IN')} ${data.totalCountries || 0} ${this.translate.instant('DASHBOARD.STATS.COUNTRIES')}` },
+        { title: this.translate.instant('DASHBOARD.STATS.OPEN_TITLE'), rawNumber: (data.openNetworkPercent ? data.openNetworkPercent.toFixed(1) : '0') + '%', description: this.translate.instant('DASHBOARD.STATS.OPEN_DESC') }
       ];
       this.cdr.detectChanges();
     });
   }
 
   onHierarchicalGeoChange(filter: { country?: string, region?: string }) {
+    this.lastGeoFilter = filter;
     const country = filter.country === 'Global' ? undefined : filter.country;
     const region = filter.region || undefined;
 
     if (!country) {
-        this.geoChartTitle = 'Top Nazioni per reti';
+        this.geoChartTitle = this.translate.instant('DASHBOARD.CHART.TOP_COUNTRIES');
         this.dashboardService.getTopCountriesChart().subscribe(res => { this.geoHierarchicalData = res; this.cdr.detectChanges(); });
     } else if (!region) {
-        this.geoChartTitle = `Top Regioni in ${country}`;
+        this.geoChartTitle = `${this.translate.instant('DASHBOARD.CHART.TOP_REGIONS_IN')} ${country}`;
         this.dashboardService.getTopRegionsChart(country).subscribe(res => { this.geoHierarchicalData = res; this.cdr.detectChanges(); });
     } else {
-        this.geoChartTitle = `Top Città in ${region}`;
+        this.geoChartTitle = `${this.translate.instant('DASHBOARD.CHART.TOP_CITIES_IN')} ${region}`;
         this.dashboardService.getTopCitiesChart(country, region).subscribe(res => { this.geoHierarchicalData = res; this.cdr.detectChanges(); });
     }
   }
@@ -185,7 +145,7 @@ export class Dashboard implements OnInit {
         this.dashboardService.getSecurityChart(country, region).subscribe(data => {
             const total = data.reduce((acc, curr) => acc + (curr.value as number), 0);
             this.securityData = data.map(d => ({ 
-                label: d.label, 
+                label: this.translate.instant('SEC.' + d.label.replace(/\s+/g, '').toUpperCase()), 
                 value: total > 0 ? Math.round(((d.value as number) / total) * 100 * 10) / 10 : 0 
             }));
             this.cdr.detectChanges();
@@ -195,20 +155,23 @@ export class Dashboard implements OnInit {
         this.dashboardService.getDiscoveriesChart(country, region).subscribe(data => { this.discoveriesData = data; this.cdr.detectChanges(); });
         break;
       case 'wpa3':
-        this.wpa3CardTitle = !country ? 'Top Nazioni WPA3' : (!region ? `Top Regioni WPA3 in ${country}` : `Top Città WPA3 in ${region}`);
+        this.lastWpa3Filter = filter;
+        this.wpa3CardTitle = !country ? this.translate.instant('DASHBOARD.CHART.WPA3_COUNTRIES') : (!region ? `${this.translate.instant('DASHBOARD.CHART.WPA3_REGIONS')} ${country}` : `${this.translate.instant('DASHBOARD.CHART.WPA3_CITIES')} ${region}`);
         this.dashboardService.getTopCitiesWpa3(country, region).subscribe(res => { this.topCitiesWpa3Data = res; this.cdr.detectChanges(); });
         break;
       case 'insecure':
-        this.insecureCardTitle = !country ? 'Top Nazioni meno sicure' : (!region ? `Top Regioni meno sicure in ${country}` : `Top Città meno sicure in ${region}`);
+        this.lastInsecureFilter = filter;
+        this.insecureCardTitle = !country ? this.translate.instant('DASHBOARD.CHART.INSECURE_COUNTRIES') : (!region ? `${this.translate.instant('DASHBOARD.CHART.INSECURE_REGIONS')} ${country}` : `${this.translate.instant('DASHBOARD.CHART.INSECURE_CITIES')} ${region}`);
         this.dashboardService.getTopInsecureCities(country, region).subscribe(res => { this.topInsecureCitiesData = res; this.cdr.detectChanges(); });
         break;
       case 'category':
-        this.categoryCardTitle = !country ? 'Tipologia location (Global)' : (!region ? `Tipologia in ${country}` : `Tipologia in ${region}`);
+        this.lastCategoryFilter = filter;
+        this.categoryCardTitle = !country ? this.translate.instant('DASHBOARD.CHART.CAT_GLOBAL') : (!region ? `${this.translate.instant('DASHBOARD.CHART.CAT_IN')} ${country}` : `${this.translate.instant('DASHBOARD.CHART.CAT_IN')} ${region}`);
         this.dashboardService.getGlobalStats(country, region).subscribe((data: any) => {
             if (data?.categoryDistribution) {
                 const total = Array.isArray(data.categoryDistribution) ? 0 : Object.values(data.categoryDistribution).reduce((acc: any, curr: any) => acc + curr, 0) as number;
                 this.categoryData = Object.entries(data.categoryDistribution).map(([label, value]) => ({
-                    label: label.charAt(0).toUpperCase() + label.slice(1).toLowerCase(),
+                    label: this.translate.instant('CAT.' + label.toUpperCase()),
                     value: total > 0 ? Math.round(((value as number) / total) * 100 * 10) / 10 : 0
                 }));
             }

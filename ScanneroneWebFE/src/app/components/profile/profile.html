@@ -1,1 +1,82 @@
-<p>profile works!</p>
+<div class="profile-container" *ngIf="profile">
+  <!-- Bottone Indietro -->
+  <button class="back-btn" (click)="goBack()">
+    <i class="pi pi-arrow-left"></i> {{ 'PROFILE.BACK' | translate }}
+  </button>
+
+  <!-- Intestazione Profilo -->
+  <div class="profile-header">
+    <div class="user-main">
+      <div class="avatar-large">{{ profile.avatar }}</div>
+      <div class="user-details">
+        <h1 class="username">{{ profile.username }}</h1>
+        <p class="subtitle">{{ 'PROFILE.ACTIVE_SINCE' | translate }} {{ profile.joinDate }} &middot; {{ profile.location }}</p>
+      </div>
+    </div>
+
+    <div class="score-main">
+      <h1 class="score-large">{{ profile.score }}</h1>
+      <p class="score-subtitle">{{ 'PROFILE.TOTAL_POINTS' | translate }} &middot; #{{ profile.globalRank }} {{ 'PROFILE.GLOBAL' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- Griglia delle Card -->
+  <div class="cards-grid">
+    
+    <!-- Card: Le tue reti -->
+    <div class="profile-card">
+      <h2 class="card-title">{{ 'PROFILE.YOUR_NETWORKS' | translate }}</h2>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.TOTAL_UPLOADED' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.reti.totali | number:'1.0-0' }}</span>
+      </div>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.UNIQUE' | translate }}</span>
+        <span class="stat-value blue-text">{{ profile.reti.uniche | number:'1.0-0' }}</span>
+      </div>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.AVG_ACCURACY' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.reti.accuracy }}</span>
+      </div>
+      
+      <div class="stat-row no-border">
+        <span class="stat-label">{{ 'PROFILE.FULL_ADDRESS' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.reti.indirizzoCompleto }}</span>
+      </div>
+    </div>
+
+    <!-- Card: Copertura geografica -->
+    <div class="profile-card">
+      <h2 class="card-title">{{ 'PROFILE.GEO_COVERAGE' | translate }}</h2>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.COUNTRIES' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.geografia.paesi }}</span>
+      </div>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.REGIONS' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.geografia.regioni }}</span>
+      </div>
+      
+      <div class="stat-row">
+        <span class="stat-label">{{ 'PROFILE.CITIES' | translate }}</span>
+        <span class="stat-value font-bold">{{ profile.geografia.citta }}</span>
+      </div>
+      
+      <div class="stat-row no-border">
+        <span class="stat-label">{{ 'PROFILE.NEW_CITIES' | translate }}</span>
+        <span class="stat-value blue-text">{{ profile.geografia.nuoveCitta }}</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Spinner se sta caricando -->
+<div class="loading-state" *ngIf="!profile">
+  <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #3b82f6;"></i>
+</div>

@@ -1,1 +1,53 @@
-<p>classifica works!</p>
+<div class="classifica-container">
+  <div class="filters-header">
+    <div class="filters">
+      <button class="filter-btn" [class.active]="activeCategory === 'global'" (click)="setCategory('global')">{{ 'LEADERBOARD.GLOBAL' | translate }}</button>
+      <button class="filter-btn" [class.active]="activeCategory === 'discovery'" (click)="setCategory('discovery')">{{ 'LEADERBOARD.DISCOVERY' | translate }}</button>
+      <button class="filter-btn" [class.active]="activeCategory === 'travelers'" (click)="setCategory('travelers')">{{ 'LEADERBOARD.TRAVELERS' | translate }}</button>
+    </div>
+
+    <div class="geo-filters">
+       <p-select [options]="countryOptions" 
+                [(ngModel)]="selectedCountry" 
+                (onChange)="onCountryChangeLocal()" 
+                styleClass="p-dropdown-sm custom-geo"></p-select>
+
+       <p-select *ngIf="selectedCountry !== 'Global' && regionOptions.length > 0"
+                [options]="regionOptions" 
+                [(ngModel)]="selectedRegion" 
+                (onChange)="onRegionChangeLocal()" 
+                styleClass="p-dropdown-sm custom-geo"></p-select>
+    </div>
+  </div>
+
+  <div class="leaderboard-card">
+    <div class="leaderboard-row" *ngFor="let entry of paginatedLeaderboard; let isLast=last; let i=index" [class.border-bottom]="!isLast">
+      <div class="rank" [ngClass]="getRankColor(entry.rank)">{{ entry.rank }}</div>
+      
+      <div class="user-info">
+        <div class="username-container">
+          <div class="username">{{ entry.username }}</div>
+          <div class="user-uuid">{{ entry.deviceToken }}</div>
+        </div>
+        <div class="location-stats">
+          {{ entry.citiesCovered }} {{ 'LEADERBOARD.CITIES' | translate }} &middot; {{ entry.uniqueDiscovered | number:'1.0-0' }} {{ 'LEADERBOARD.NETWORKS' | translate }}
+        </div>
+      </div>
+      
+      <div class="score-info">
+        <div class="score">{{ entry.score | number }} pt</div>
+        <div class="accuracy" *ngIf="entry.avgAccuracy">{{ 'LEADERBOARD.AVG_ACCURACY' | translate }} {{ entry.avgAccuracy | number:'1.1-1' }}m</div>
+      </div>
+    </div>
+
+    <p-paginator 
+      [first]="first" 
+      [rows]="rows" 
+      [totalRecords]="totalRecords" 
+      (onPageChange)="onPageChange($event)"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="{first} - {last} di {totalRecords}"
+      styleClass="custom-paginator">
+    </p-paginator>
+  </div>
+</div>

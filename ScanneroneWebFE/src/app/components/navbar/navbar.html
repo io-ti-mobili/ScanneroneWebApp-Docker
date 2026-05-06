@@ -3,6 +3,14 @@
         Scannerone
     </a>
     
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-button">Dashboard</a>
-    <a routerLink="/classifica" routerLinkActive="active" class="nav-button">Classifica</a>
+    <div class="nav-links">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-button">{{ 'NAVBAR.DASHBOARD' | translate }}</a>
+        <a routerLink="/classifica" routerLinkActive="active" class="nav-button">{{ 'NAVBAR.LEADERBOARD' | translate }}</a>
+    </div>
+
+    <div class="lang-switch">
+        <button (click)="switchLang('it')" [class.active]="currentLang === 'it'">IT</button>
+        <span class="sep">|</span>
+        <button (click)="switchLang('en')" [class.active]="currentLang === 'en'">EN</button>
+    </div>
 </div>

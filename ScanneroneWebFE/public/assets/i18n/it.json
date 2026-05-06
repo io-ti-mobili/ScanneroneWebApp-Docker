@@ -1,0 +1,75 @@
+{
+  "NAVBAR": {
+    "DASHBOARD": "Dashboard",
+    "LEADERBOARD": "Classifica"
+  },
+  "DASHBOARD": {
+    "TITLE": "Network Dashboard",
+    "STATS": {
+      "NETWORKS_TITLE": "Reti nel database",
+      "NETWORKS_DESC": "Totale reti caricate",
+      "USERS_TITLE": "Utenti attivi",
+      "USERS_DESC": "Community Scannerone",
+      "CITIES_TITLE": "Città mappate",
+      "IN": "In",
+      "COUNTRIES": "nazioni",
+      "OPEN_TITLE": "Reti Open",
+      "OPEN_DESC": "Senza protezione"
+    },
+    "CHART": {
+      "SECURITY": "Sicurezza reti",
+      "DISCOVERIES": "Scoperte giornaliere",
+      "TOP_COUNTRIES": "Top Nazioni per reti",
+      "TOP_REGIONS_IN": "Top Regioni in",
+      "TOP_CITIES_IN": "Top Città in",
+      "WPA3_COUNTRIES": "Top Nazioni WPA3",
+      "WPA3_REGIONS": "Top Regioni WPA3 in",
+      "WPA3_CITIES": "Top Città WPA3 in",
+      "INSECURE_COUNTRIES": "Top Nazioni meno sicure",
+      "INSECURE_REGIONS": "Top Regioni meno sicure in",
+      "INSECURE_CITIES": "Top Città meno sicure in",
+      "CAT_GLOBAL": "Tipologia location (Global)",
+      "CAT_IN": "Tipologia in",
+      "BAND": "Banda — 2.4 / 5 / 6 GHz"
+    }
+  },
+  "LEADERBOARD": {
+    "GLOBAL": "Global Score",
+    "DISCOVERY": "Scopritori",
+    "TRAVELERS": "Esploratori",
+    "CITIES": "città",
+    "NETWORKS": "reti uniche",
+    "AVG_ACCURACY": "accuracy media"
+  },
+  "PROFILE": {
+    "BACK": "Torna alla Classifica",
+    "ACTIVE_SINCE": "Attivo da",
+    "TOTAL_POINTS": "punti totali",
+    "GLOBAL": "globale",
+    "YOUR_NETWORKS": "Le tue reti",
+    "TOTAL_UPLOADED": "Caricate totali",
+    "UNIQUE": "Uniche (nuove per il DB)",
+    "AVG_ACCURACY": "Accuracy media",
+    "FULL_ADDRESS": "Con indirizzo completo",
+    "GEO_COVERAGE": "Copertura geografica",
+    "COUNTRIES": "Paesi",
+    "REGIONS": "Regioni",
+    "CITIES": "Città",
+    "NEW_CITIES": "Nuove città scoperte"
+  },
+  "SEC": {
+    "WPA2": "WPA2",
+    "WPA3": "WPA3",
+    "WPA2/WPA3": "WPA2/WPA3",
+    "WPA/WPA2": "WPA/WPA2",
+    "WEP": "WEP",
+    "OPEN": "Open"
+  },
+  "CAT": {
+    "ISP": "Provider",
+    "FAST_FOOD": "Fast Food",
+    "UNIVERSITY": "Università",
+    "HOTSPOT": "Hotspot",
+    "OTHER": "Altro"
+  }
+}

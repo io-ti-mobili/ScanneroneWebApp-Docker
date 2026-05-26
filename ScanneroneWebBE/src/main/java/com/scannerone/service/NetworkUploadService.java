@@ -221,6 +221,7 @@ public class NetworkUploadService {
     private WifiNetwork toEntity(WifiNetworkUploadDto dto, String bssid, User user) {
         String safeCategory = (dto.category != null && VALID_CATEGORIES.contains(dto.category.toUpperCase())) 
                 ? dto.category.toUpperCase() : "OTHER";
+        String safeSecurity = (dto.security != null) ? dto.security.toUpperCase() : "OTHER";
 
         return WifiNetwork.builder()
                 .bssid(bssid)
@@ -230,7 +231,7 @@ public class NetworkUploadService {
                 .longitude(dto.realLongitude)
                 .estAccuracy(dto.estAccuracy)
                 .category(safeCategory)
-                .security(dto.security)
+                .security(safeSecurity)
                 .frequencyBand(dto.frequencyBand)
                 .firstSeenBy(user)
                 .lastUpdatedBy(user)

@@ -2,7 +2,10 @@ package com.scannerone.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scannerone.entity.User;
 import com.scannerone.entity.WifiNetwork;
+import com.scannerone.repository.NetworkUploadRepository;
+import com.scannerone.repository.UserRepository;
 import com.scannerone.repository.WifiNetworkRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -27,6 +30,8 @@ public class NominatimProxyService {
     private static final Logger log = LoggerFactory.getLogger(NominatimProxyService.class);
 
     private final WifiNetworkRepository networkRepository;
+    private final UserRepository userRepository;
+    private final NetworkUploadRepository uploadRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -37,8 +42,10 @@ public class NominatimProxyService {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final AtomicBoolean isProcessing = new AtomicBoolean(false);
 
-    public NominatimProxyService(WifiNetworkRepository networkRepository) {
+    public NominatimProxyService(WifiNetworkRepository networkRepository, UserRepository userRepository, NetworkUploadRepository uploadRepository) {
         this.networkRepository = networkRepository;
+        this.userRepository = userRepository;
+        this.uploadRepository = uploadRepository;
     }
 
     @PostConstruct
@@ -108,15 +115,31 @@ public class NominatimProxyService {
             }
         }
 
+        boolean cityChanged = false;
         if (result != null) {
             if (network.getStreet() == null && result.street != null) { network.setStreet(result.street); }
-            if (network.getCity() == null && result.city != null) { network.setCity(result.city); }
+            if (network.getCity() == null && result.city != null) { 
+                network.setCity(result.city); 
+                cityChanged = true;
+            }
             if (network.getRegion() == null && result.region != null) { network.setRegion(result.region); }
             if (network.getCountry() == null && result.country != null) { network.setCountry(result.country); }
         }
         
         network.setNeedsNominatimUpdate(false);
         networkRepository.save(network);
+        
+        if (cityChanged) {
+            // Update citiesCovered for users who uploaded this network
+            List<Long> userIds = uploadRepository.findUserIdsByNetworkId(network.getId());
+            for (Long userId : userIds) {
+                userRepository.findById(userId).ifPresent(user -> {
+                    int cities = uploadRepository.findDistinctCitiesByUser(userId).size();
+                    user.setCitiesCovered(cities);
+                    userRepository.save(user);
+                });
+            }
+        }
     }
 
     private GeoResult fetchFromNominatim(double lat, double lon) {

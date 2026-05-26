@@ -1,10 +1,10 @@
 
-FROM node:22
+FROM node:22-alpine
 WORKDIR /app
 
 # Installa le dipendenze
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copia il resto del codice
 COPY . .

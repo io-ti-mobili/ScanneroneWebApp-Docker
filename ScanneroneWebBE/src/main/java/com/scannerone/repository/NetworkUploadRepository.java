@@ -20,6 +20,9 @@ public interface NetworkUploadRepository extends JpaRepository<NetworkUpload, Lo
     """)
     List<String> findDistinctCitiesByUser(@Param("userId") long userId);
 
+    @Query("SELECT DISTINCT nu.user.id FROM NetworkUpload nu WHERE nu.network.id = :networkId")
+    List<Long> findUserIdsByNetworkId(@Param("networkId") long networkId);
+
     // Upload giornalieri per utente (per timeline del profilo)
     @Query("""
         SELECT DATE(nu.uploadedAt), COUNT(nu) FROM NetworkUpload nu

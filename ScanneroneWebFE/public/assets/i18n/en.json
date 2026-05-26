@@ -58,12 +58,15 @@
     "NEW_CITIES": "New cities discovered"
   },
   "SEC": {
+    "WPA": "WPA",
     "WPA2": "WPA2",
     "WPA3": "WPA3",
     "WPA2/WPA3": "WPA2/WPA3",
     "WPA/WPA2": "WPA/WPA2",
     "WEP": "WEP",
-    "OPEN": "Open"
+    "OPEN": "Open",
+    "ALTRO": "Other",
+    "OTHER": "Other"
   },
   "CAT": {
     "ISP": "ISP",

@@ -2,7 +2,7 @@
 
 function deploy() {
     echo "Cleaning old versions..."
-    docker compose down -v
+    docker compose down
     
     echo "Deploying new version..."
     docker compose build --no-cache

@@ -103,13 +103,13 @@ public interface WifiNetworkRepository extends JpaRepository<WifiNetwork, Long> 
     @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.security = 'WPA3' AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
     long countWpa3Networks(@Param("country") String country, @Param("region") String region);
 
-    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand = 2.4 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
+    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand > 2.3 AND n.frequencyBand < 2.5 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
     long countBand24Networks(@Param("country") String country, @Param("region") String region);
 
-    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand = 5.0 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
+    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand > 4.9 AND n.frequencyBand < 5.1 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
     long countBand5Networks(@Param("country") String country, @Param("region") String region);
 
-    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand = 6.0 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
+    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.frequencyBand > 5.9 AND n.frequencyBand < 6.1 AND (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region)")
     long countBand6Networks(@Param("country") String country, @Param("region") String region);
 
     @Query("SELECT n.security, COUNT(n) FROM WifiNetwork n WHERE (:country IS NULL OR n.country = :country) AND (:region IS NULL OR n.region = :region) GROUP BY n.security")

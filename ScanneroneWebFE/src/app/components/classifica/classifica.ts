@@ -32,12 +32,19 @@ import { TranslateModule } from '@ngx-translate/core';
     .geo-filters {
       display: flex;
       gap: 0.75rem;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .geo-filters {
+        width: auto;
+      }
     }
     ::ng-deep .custom-geo.p-select {
         background: #282828 !important;
         border: 1px solid #333 !important;
         border-radius: 8px !important;
         min-width: 120px;
+        flex: 1;
     }
     ::ng-deep .custom-geo .p-select-label {
         color: #e0e0e0 !important;
@@ -47,6 +54,16 @@ import { TranslateModule } from '@ngx-translate/core';
     .filters {
       display: flex;
       gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem; /* Space for scrollbar if needed */
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .filters {
+        width: auto;
+        padding-bottom: 0;
+        overflow-x: visible;
+      }
     }
     .filter-btn {
       background-color: transparent;
@@ -75,8 +92,17 @@ import { TranslateModule } from '@ngx-translate/core';
     .leaderboard-row {
       display: flex;
       align-items: center;
-      padding: 1.25rem 1.5rem;
+      padding: 1rem;
       transition: background-color 0.2s;
+      flex-wrap: wrap; /* Allow wrapping on mobile */
+      gap: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .leaderboard-row {
+        padding: 1.25rem 1.5rem;
+        flex-wrap: nowrap;
+        gap: 0;
+      }
     }
     .border-bottom {
       border-bottom: 1px solid #333;
@@ -93,18 +119,37 @@ import { TranslateModule } from '@ngx-translate/core';
     
     .user-info {
       flex-grow: 1;
-      margin-left: 1.25rem;
+      margin-left: 0.5rem;
+      min-width: 0; /* Important for text truncation inside flex child */
+      width: calc(100% - 3rem); /* Take remaining width on mobile minus rank */
+    }
+    @media (min-width: 640px) {
+      .user-info {
+        margin-left: 1.25rem;
+        width: auto;
+      }
+    }
+    .username-container {
+      display: flex;
+      flex-direction: column;
     }
     .username {
       color: white;
       font-weight: 500;
       font-size: 1.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .user-uuid {
       color: #666;
       font-size: 0.75rem;
       font-family: monospace;
       margin-top: 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .location-stats {
       color: #a0a0a0;
@@ -113,7 +158,18 @@ import { TranslateModule } from '@ngx-translate/core';
     }
     
     .score-info {
-      text-align: right;
+      text-align: left;
+      width: 100%;
+      padding-left: 2.5rem; /* Align with user-info (rank width + margin) */
+      margin-top: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .score-info {
+        text-align: right;
+        width: auto;
+        padding-left: 0;
+        margin-top: 0;
+      }
     }
     .score {
       color: #3b82f6;

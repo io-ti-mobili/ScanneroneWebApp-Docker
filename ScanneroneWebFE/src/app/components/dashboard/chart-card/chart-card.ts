@@ -25,8 +25,10 @@ import { TranslateModule } from '@ngx-translate/core';
     .card-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start; /* Changed from center to accommodate wrapping */
       margin-bottom: 1.5rem;
+      flex-wrap: wrap; /* Make it wrap on small screens */
+      gap: 0.75rem;
     }
     .card-title {
       color: #fff;
@@ -34,7 +36,28 @@ import { TranslateModule } from '@ngx-translate/core';
       font-weight: 500;
       margin: 0;
       opacity: 0.9;
+      width: 100%; /* Default to full width on mobile */
     }
+    @media (min-width: 640px) {
+      .card-header {
+        align-items: center;
+      }
+      .card-title {
+        width: auto;
+      }
+    }
+    
+    .header-filters {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .header-filters {
+        width: auto;
+      }
+    }
+
     .chart-container {
       position: relative;
       flex-grow: 1;
@@ -108,12 +131,19 @@ import { TranslateModule } from '@ngx-translate/core';
         background: #333 !important;
         border: 1px solid #444 !important;
         border-radius: 6px !important;
+        width: 100%;
+    }
+    @media (min-width: 640px) {
+      ::ng-deep .custom-dropdown .p-select {
+          width: auto;
+      }
     }
     ::ng-deep .custom-geo-card.p-select {
         background: #1a1a1a !important;
         border: 1px solid #444 !important;
         border-radius: 6px !important;
         min-width: 100px;
+        flex: 1; /* Allow to grow on mobile */
     }
     ::ng-deep .custom-geo-card .p-select-label {
         color: #e0e0e0 !important;

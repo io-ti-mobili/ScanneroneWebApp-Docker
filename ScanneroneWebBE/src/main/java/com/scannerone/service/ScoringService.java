@@ -68,6 +68,7 @@ public class ScoringService {
     private boolean isAccuracyImprovement(Float incoming, Float existing) {
         if (incoming == null) return false;
         if (existing == null) return true;
-        return incoming < existing;
+        // Richiediamo un miglioramento netto di almeno 0.5m per evitare exploit con micro-fluttuazioni
+        return incoming <= existing - 0.5f;
     }
 }

@@ -202,7 +202,10 @@ public class NetworkUploadService {
 
                     existing.setLatitude((existing.getLatitude() * wExt + dto.realLatitude * wNew) / totalW);
                     existing.setLongitude((existing.getLongitude() * wExt + dto.realLongitude * wNew) / totalW);
-                    existing.setEstAccuracy((float) ((existing.getEstAccuracy() * wExt + dto.estAccuracy * wNew) / totalW));
+                    
+                    // Salviamo sempre l'accuratezza migliore in assoluto
+                    // evitando che misurazioni peggiori alzino la media nel DB
+                    existing.setEstAccuracy(Math.min(existing.getEstAccuracy(), dto.estAccuracy));
                     modified = true;
                 }
             }

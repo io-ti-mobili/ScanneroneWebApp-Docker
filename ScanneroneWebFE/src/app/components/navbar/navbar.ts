@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
       color: white;
       font-weight: bold;
       font-size: 1.25rem;
-      margin-right: auto; /* Push everything else to the right */
+      margin-right: 2rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;

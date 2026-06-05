@@ -28,8 +28,8 @@
       "INSECURE_COUNTRIES": "Top Insecure Countries",
       "INSECURE_REGIONS": "Top Insecure Regions in",
       "INSECURE_CITIES": "Top Insecure Cities in",
-      "CAT_GLOBAL": "Location Type (Global)",
-      "CAT_IN": "Location Type in",
+      "CAT_GLOBAL": "Network Type (Global)",
+      "CAT_IN": "Network Type in",
       "BAND": "Band — 2.4 / 5 / 6 GHz"
     }
   },

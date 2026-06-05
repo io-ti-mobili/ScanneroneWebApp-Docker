@@ -28,8 +28,8 @@
       "INSECURE_COUNTRIES": "Top Nazioni meno sicure",
       "INSECURE_REGIONS": "Top Regioni meno sicure in",
       "INSECURE_CITIES": "Top Città meno sicure in",
-      "CAT_GLOBAL": "Tipologia location (Global)",
-      "CAT_IN": "Tipologia in",
+      "CAT_GLOBAL": "Tipologia rete (Global)",
+      "CAT_IN": "Tipologia rete in",
       "BAND": "Banda — 2.4 / 5 / 6 GHz"
     }
   },

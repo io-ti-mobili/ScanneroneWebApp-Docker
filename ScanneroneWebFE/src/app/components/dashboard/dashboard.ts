@@ -57,7 +57,7 @@ export class Dashboard implements OnInit {
   wpa3CardTitle: string = 'Top Nazioni WPA3';
   topInsecureCitiesData: ChartDataDto[] = [];
   insecureCardTitle: string = 'Top Nazioni meno sicure';
-  categoryCardTitle: string = 'Tipologia location (Global)';
+  categoryCardTitle: string = 'Tipologia rete (Global)';
   bandData: ChartDataDto[] = [];
   categoryData: ChartDataDto[] = [];
 

@@ -89,8 +89,9 @@ public class NominatimProxyService {
                             return; // Stop if interrupted
                         } catch (Exception e) {
                             log.error("Error geocoding network {}: {}", network.getId(), e.getMessage());
-                            network.setNeedsNominatimUpdate(false);
-                            networkRepository.save(network);
+                            // L'API ha fallito. Non scartiamo la rete, ma interrompiamo
+                            // il ciclo di batch per non spammare l'API offline.
+                            throw new RuntimeException("Interrompo il batch per errore Nominatim", e);
                         }
                     } else {
                         network.setNeedsNominatimUpdate(false);
@@ -113,6 +114,10 @@ public class NominatimProxyService {
             if (result != null) {
                 geoCache.put(cacheKey, result);
             }
+        }
+
+        if (result == null) {
+            throw new RuntimeException("Nominatim API returned null (blocco o errore)");
         }
 
         boolean cityChanged = false;
@@ -147,7 +152,7 @@ public class NominatimProxyService {
             String url = String.format(java.util.Locale.US, "https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&zoom=18&addressdetails=1", lat, lon);
             
             HttpHeaders headers = new HttpHeaders();
-            headers.set("User-Agent", "ScanneroneBackend/1.0"); // Nominatim requires a user agent
+            headers.set("User-Agent", "ScanneroneBackend/1.0 (contact@scannerone.local)"); // Nominatim requires a user agent with contact info
             HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
             
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);

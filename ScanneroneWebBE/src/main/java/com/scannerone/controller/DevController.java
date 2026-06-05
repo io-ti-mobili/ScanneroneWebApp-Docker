@@ -3,10 +3,12 @@ package com.scannerone.controller;
 import com.scannerone.dto.UploadRequestDto;
 import com.scannerone.dto.WifiNetworkUploadDto;
 import com.scannerone.entity.User;
+import com.scannerone.repository.WifiNetworkRepository;
 import com.scannerone.service.NetworkUploadService;
 import com.scannerone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ public class DevController {
 
     private final UserService userService;
     private final NetworkUploadService networkUploadService;
+    private final WifiNetworkRepository wifiNetworkRepository;
 
     private static final String[] SSIDS = {"Vodafone-WiFi", "TIM-1234", "Fastweb-Net", "McDonalds-Free", "eduroam", "iPhone di Luca", "AndroidAP", "Home-WiFi", "TP-Link", "ASUS"};
     private static final String[] SECURITIES = {"WPA2-PSK", "WPA3", "OPEN", "WEP", "WPA2-EAP"};
@@ -90,5 +93,17 @@ public class DevController {
         }
 
         return ResponseEntity.ok("Successfully seeded 10 users and 100 networks through the upload pipeline.");
+    }
+
+    @GetMapping("/diagnostics/nominatim")
+    public ResponseEntity<Map<String, Object>> checkNominatimStatus() {
+        long failedCount = wifiNetworkRepository.countFailedNominatimNetworks();
+        Map<String, Object> response = new HashMap<>();
+        response.put("failed_networks_count", failedCount);
+        response.put("is_bugged", failedCount > 0);
+        response.put("message", failedCount > 0 
+            ? "Ci sono reti bloccate con needsNominatimUpdate=false. Esegui la query SQL per sbloccarle." 
+            : "Tutto ok, nessuna rete e' bloccata.");
+        return ResponseEntity.ok(response);
     }
 }

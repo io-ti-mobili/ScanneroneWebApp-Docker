@@ -24,9 +24,10 @@ public class DevController {
     private final NetworkUploadService networkUploadService;
     private final WifiNetworkRepository wifiNetworkRepository;
 
-    private static final String[] SSIDS = {"Vodafone-WiFi", "TIM-1234", "Fastweb-Net", "McDonalds-Free", "eduroam", "iPhone di Luca", "AndroidAP", "Home-WiFi", "TP-Link", "ASUS"};
-    private static final String[] SECURITIES = {"WPA2-PSK", "WPA3", "OPEN", "WEP", "WPA2-EAP"};
-    private static final String[] CATEGORIES = {"ISP", "FAST_FOOD", "UNIVERSITY", "HOTSPOT", "OTHER"};
+    private static final String[] SSIDS = { "Vodafone-WiFi", "TIM-1234", "Fastweb-Net", "McDonalds-Free", "eduroam",
+            "iPhone di Luca", "AndroidAP", "Home-WiFi", "TP-Link", "ASUS" };
+    private static final String[] SECURITIES = { "WPA2-PSK", "WPA3", "OPEN", "WEP", "WPA2-EAP" };
+    private static final String[] CATEGORIES = { "ISP", "FAST_FOOD", "UNIVERSITY", "HOTSPOT", "OTHER" };
 
     @PostMapping("/seed")
     public ResponseEntity<String> seedData() {
@@ -38,7 +39,8 @@ public class DevController {
             User user = userService.registerUser();
             // Let's set a specific username for easier tracking in dev
             userService.updateUsername(user.getId(), "UserDev" + i + "_" + random.nextInt(1000));
-            // We need to re-fetch the user to ensure we have the updated username or just use the updated one
+            // We need to re-fetch the user to ensure we have the updated username or just
+            // use the updated one
             user = userService.findById(user.getId());
             users.add(user);
         }
@@ -53,15 +55,15 @@ public class DevController {
             String bssid = String.format("%02X:%02X:%02X:%02X:%02X:%02X",
                     random.nextInt(256), random.nextInt(256), random.nextInt(256),
                     random.nextInt(256), random.nextInt(256), random.nextInt(256));
-            
+
             String ssid = SSIDS[random.nextInt(SSIDS.length)] + "-" + random.nextInt(1000);
             String security = SECURITIES[random.nextInt(SECURITIES.length)];
             String category = CATEGORIES[random.nextInt(CATEGORIES.length)];
             int frequency = 2400 + random.nextInt(4000);
             float band = frequency < 3000 ? 2.4f : (frequency < 6000 ? 5.0f : 6.0f);
-            
+
             User owner = users.get(random.nextInt(users.size()));
-            
+
             WifiNetworkUploadDto networkDto = WifiNetworkUploadDto.builder()
                     .bssid(bssid)
                     .ssid(ssid)
@@ -73,7 +75,7 @@ public class DevController {
                     .security(security)
                     .category(category)
                     .build();
-            
+
             userNetworksMap.get(owner).add(networkDto);
         }
 
@@ -87,7 +89,7 @@ public class DevController {
                         .password(user.getPassword())
                         .networks(userNetworks)
                         .build();
-                
+
                 networkUploadService.processUpload(requestDto);
             }
         }
@@ -103,9 +105,9 @@ public class DevController {
         response.put("failed_networks_count", failedCount);
         response.put("queued_networks_count", queuedCount);
         response.put("is_bugged", failedCount > 0);
-        response.put("message", failedCount > 0 
-            ? "Ci sono reti bloccate con needsNominatimUpdate=false. Esegui la query SQL per sbloccarle." 
-            : "Tutto ok, nessuna rete e' bloccata.");
+        response.put("message", failedCount > 0
+                ? "Ci sono reti bloccate con needsNominatimUpdate=false. Esegui la query SQL per sbloccarle."
+                : "Tutto ok, nessuna rete e' bloccata.");
         return ResponseEntity.ok(response);
     }
 }

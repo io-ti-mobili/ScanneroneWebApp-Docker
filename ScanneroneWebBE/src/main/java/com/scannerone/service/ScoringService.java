@@ -13,7 +13,6 @@ public class ScoringService {
     public static final int POINTS_ACCURACY_EXCELLENT = 3; // accuracy < 10m
     public static final int POINTS_ACCURACY_GOOD = 1; // accuracy < 30m
     public static final int POINTS_ACCURACY_UPDATE = 2; // miglioramento accuracy su rete esistente
-    public static final int POINTS_NEW_CITY_FOR_USER = 10; // prima rete in una città nuova per quell'utente
 
     public record ScoringResult(
         int points,
@@ -50,10 +49,6 @@ public class ScoringService {
             POINTS_ACCURACY_UPDATE + accuracyBonus(incoming.estAccuracy);
 
         return new ScoringResult(points, false, improvedAccuracy, false);
-    }
-
-    public int newCityBonus() {
-        return POINTS_NEW_CITY_FOR_USER;
     }
 
     // --- Helpers privati ---

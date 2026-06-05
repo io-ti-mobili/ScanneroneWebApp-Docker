@@ -98,8 +98,10 @@ public class DevController {
     @GetMapping("/diagnostics/nominatim")
     public ResponseEntity<Map<String, Object>> checkNominatimStatus() {
         long failedCount = wifiNetworkRepository.countFailedNominatimNetworks();
+        long queuedCount = wifiNetworkRepository.countQueuedNominatimNetworks();
         Map<String, Object> response = new HashMap<>();
         response.put("failed_networks_count", failedCount);
+        response.put("queued_networks_count", queuedCount);
         response.put("is_bugged", failedCount > 0);
         response.put("message", failedCount > 0 
             ? "Ci sono reti bloccate con needsNominatimUpdate=false. Esegui la query SQL per sbloccarle." 

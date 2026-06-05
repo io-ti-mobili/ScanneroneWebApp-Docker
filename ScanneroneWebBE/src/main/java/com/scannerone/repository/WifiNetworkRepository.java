@@ -214,6 +214,9 @@ public interface WifiNetworkRepository extends JpaRepository<WifiNetwork, Long> 
     @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.city IS NULL AND n.latitude IS NOT NULL AND n.needsNominatimUpdate = false")
     long countFailedNominatimNetworks();
 
+    @Query("SELECT COUNT(n) FROM WifiNetwork n WHERE n.needsNominatimUpdate = true AND n.latitude IS NOT NULL")
+    long countQueuedNominatimNetworks();
+
     // --- Geografiche paginate ---
     @Query(value = "SELECT DISTINCT n.country FROM wifi_networks n WHERE n.country IS NOT NULL ORDER BY n.country LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<String> findDistinctCountriesPaginated(@Param("limit") int limit, @Param("offset") int offset);
